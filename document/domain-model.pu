@@ -1,0 +1,88 @@
+@startuml domain-model
+class YuPack {
+    ArrayList<ParcelPost> parcelPosts
+    AddressOfJapan sendingPlace
+    AddressOfJapan destinationPlace
+    Integer getPrice()
+    Boolean isAcceptableParcelPost()
+}
+
+class ParcelPost {
+    Metre length
+    Metre height
+    Metre width
+    Gram weight
+    Metre getSize()
+}
+
+class Gram {
+    Double gram
+    Double getKiloGram()
+    void setKiloGram()
+}
+
+class Metre {
+    Double metre
+    Double getCentiMetre()
+    void setCentiMetre()
+}
+
+class Address {
+    Country country
+    AddressLine addressLine
+    City city
+    State state
+    ZipCode zipCode
+}
+
+class AddressOfJapan {
+    AreaOfJapan getAreaFromState()
+    void setAddressFromZipCode()
+}
+
+class Country
+
+class AddressLine {
+    String addressLineOne
+    String addressLineTwo
+}
+
+class City
+
+class State
+
+class ZipCode
+
+class AreaOfJapan {
+    AreaNameOfJapan name
+}
+
+enum AreaNameOfJapan {
+    北海道
+    東北
+    関東
+    東京
+    信越
+    北陸
+    東海
+    近畿
+    中国
+    四国
+    九州
+    沖縄
+}
+
+YuPack -- ParcelPost : max have 100 >
+ParcelPost --> Gram
+ParcelPost --> Metre
+YuPack --> AddressOfJapan
+Address --> Country
+Address --> AddressLine
+Address --> City
+Address --> State
+Address --> ZipCode
+Address <|-- AddressOfJapan
+AddressOfJapan *- AreaOfJapan
+AreaOfJapan -- AreaNameOfJapan
+
+@enduml
