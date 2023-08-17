@@ -1,63 +1,34 @@
 @startuml domain-model
-class YuPack {
-    ArrayList<ParcelPost> parcelPosts
-    AddressOfJapan sendingPlace
-    AddressOfJapan destinationPlace
-    Integer getPrice()
-    Boolean isAcceptableParcelPost()
+entity ゆうパック {
+    荷物
+    個数
+    差出地
+    宛先地
+    基本運賃の計算(): 料金
+    受付可能な荷物か(): 真偽値
 }
 
-class ParcelPost {
-    Metre length
-    Metre height
-    Metre width
-    Gram weight
-    Metre getSize()
+class 荷物 {
+    縦
+    横
+    高さ
+    重さ
+    サイズ取得(): サイズ
 }
 
-class Gram {
-    Double gram
-    Double getKiloGram()
-    void setKiloGram()
+class サイズ {
+    サイズ名
+    荷物の大きさ
 }
 
-class Metre {
-    Double metre
-    Double getCentiMetre()
-    void setCentiMetre()
+note "縦・横・高さの合計が170cm以下\n重さが25kg以下" as 受付可能な荷物
+
+class 都道府県 {
+    都道府県名
+    地域名取得(): 地域名
 }
 
-class Address {
-    Country country
-    AddressLine addressLine
-    City city
-    State state
-    ZipCode zipCode
-}
-
-class AddressOfJapan {
-    AreaOfJapan getAreaFromState()
-    void setAddressFromZipCode()
-}
-
-class Country
-
-class AddressLine {
-    String addressLineOne
-    String addressLineTwo
-}
-
-class City
-
-class State
-
-class ZipCode
-
-class AreaOfJapan {
-    AreaNameOfJapan name
-}
-
-enum AreaNameOfJapan {
+enum 地域名 {
     北海道
     東北
     関東
@@ -72,17 +43,12 @@ enum AreaNameOfJapan {
     沖縄
 }
 
-YuPack -- ParcelPost : max have 100 >
-ParcelPost --> Gram
-ParcelPost --> Metre
-YuPack --> AddressOfJapan
-Address --> Country
-Address --> AddressLine
-Address --> City
-Address --> State
-Address --> ZipCode
-Address <|-- AddressOfJapan
-AddressOfJapan *- AreaOfJapan
-AreaOfJapan -- AreaNameOfJapan
+ゆうパック "1" *- "1" 荷物 : 100個まで指定可能
+荷物 <.. サイズ
+ゆうパック .. 受付可能な荷物
+受付可能な荷物 .. 荷物
+ゆうパック "1" *- "1" 都道府県 : 差出地
+ゆうパック "1" *- "1" 都道府県 : 宛先地
+都道府県 -- 地域名
 
 @enduml
